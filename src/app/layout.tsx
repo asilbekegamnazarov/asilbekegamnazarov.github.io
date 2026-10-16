@@ -1,9 +1,14 @@
 import type { Metadata, Viewport } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import { siteConfig } from '@/lib/site';
+import { cn } from '@/lib/utils';
+import { ThemeProvider } from '../components/ThemeProvider';
 import './globals.css';
 
-
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -34,15 +39,26 @@ const structuredData = {
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang={siteConfig.language} className="h-full antialiased">
+    <html
+      lang={siteConfig.language}
+      className={cn('h-full antialiased', 'font-sans', inter.variable)}
+      suppressHydrationWarning
+    >
       <body className="min-h-full flex flex-col">
-        {children}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData).replace(/</g, '\\u003c'),
-          }}
-        />
+        <ThemeProvider
+          attribute={'class'}
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(structuredData).replace(/</g, '\\u003c'),
+            }}
+          />
+        </ThemeProvider>
       </body>
     </html>
   );
