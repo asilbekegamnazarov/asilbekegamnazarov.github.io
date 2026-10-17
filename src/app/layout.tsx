@@ -1,14 +1,10 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
-import { siteConfig } from '@/lib/site';
+import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '../components/ThemeProvider';
 import './globals.css';
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-sans',
-});
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -39,19 +35,17 @@ const structuredData = {
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html
-      lang={siteConfig.language}
-      className={cn('h-full antialiased', 'font-sans', inter.variable)}
-      suppressHydrationWarning
-    >
-      <body className="min-h-full flex flex-col">
+    <html lang={siteConfig.language} className={cn('h-full antialiased')} suppressHydrationWarning>
+      <body className="min-h-full w-dvw flex flex-col">
         <ThemeProvider
           attribute={'class'}
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
+          <Navbar />
           {children}
+          <Footer />
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
